@@ -7,6 +7,6 @@ export default function usePrevious(value) {
 			ref.current = value;
 		},
 		[ value ]
-	); // Only re-run if value changes
+	);
 	return ref.current;
 }
