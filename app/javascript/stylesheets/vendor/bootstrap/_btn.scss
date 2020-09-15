@@ -1,0 +1,35 @@
+$btn-round-icon-size: 12px;
+$btn-round-padding: 2px;
+
+.btn {
+  &-thin {
+    border-width: 1px;
+  }
+
+  &-round {
+    align-items: center;
+    border-radius: 50%;
+    display: flex;
+    height: $btn-round-icon-size + ($btn-round-padding * 2);
+    justify-content: center;
+    line-height: $btn-round-icon-size;
+    padding: $btn-round-padding;
+    width: $btn-round-icon-size + ($btn-round-padding * 2);
+  }
+
+  &-clean {
+    padding: 0;
+
+    &:focus {
+      outline: none;
+      box-shadow: none;
+      border-color: transparent;
+    }
+  }
+
+  &-center {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+  }
+}

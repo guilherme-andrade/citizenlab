@@ -1,0 +1,17 @@
+@import 'mixins';
+
+.no-scrollbar {
+  @include no-scrollbar;
+}
+
+.link-clean {
+  @include link-clean;
+}
+
+.pointer-events-none {
+  pointer-events: none;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}

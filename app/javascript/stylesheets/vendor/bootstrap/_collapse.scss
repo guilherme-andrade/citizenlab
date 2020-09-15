@@ -1,0 +1,26 @@
+@import '../../config/variables';
+@import '../../config/mixins';
+
+.collapse {
+  &-link {
+    @include link-clean;
+
+    display: block;
+    text-align: left;
+    border-radius: $border-radius-sm;
+    transition: background 0.2s ease-in-out;
+    width: 100%;
+    padding: 0 $input-btn-padding-x-sm;
+
+    &:hover {
+      background: $light;
+      text-decoration: none;
+    }
+
+    &.active {
+      color: $body-bg;
+      background: $primary;
+      text-decoration: none;
+    }
+  }
+}
