@@ -14,7 +14,7 @@ export default function Folder() {
       <p>{folder.description}</p>
 
       <section className="row">
-        {folder.folders.map(folder => <FolderCard folder={folder} />)}
+        {folder && folder.folders && folder.folders.map(folder => <FolderCard folder={folder} />)}
       </section>
     </div>
   )
