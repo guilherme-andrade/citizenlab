@@ -9,10 +9,4 @@ class Project < ApplicationRecord
 
     includes(:project_topics).where(project_topics: { topic_id: topic_ids })
   }
-
-  def as_json
-    super.tap do |json|
-      json['topic_ids'] = topics.pluck(:id)
-    end
-  end
 end

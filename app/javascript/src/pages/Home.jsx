@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
+import { uniqueId, isEmpty } from 'lodash';
+import { useNavigate } from 'react-router-dom';
+
 import { useFolders, useProjects, useTopics } from 'src/hooks';
-import { parseInt } from 'lodash';
-import { sortByStartedDate } from 'src/services/sorting';
-import { filterByFolder, filterByNoFolder } from 'src/services/filter';
+import { filterByNoFolder } from 'src/services/filter';
+import FolderCard from 'src/components/FolderCard';
+import ProjectCard from 'src/components/ProjectCard';
 
 function Home() {
+	const navigate = useNavigate();
 	const [ topicIds, setTopicIds ] = useState([]);
 	const { folders } = useFolders();
 	const { projects } = useProjects({ topicIds });
@@ -28,6 +32,10 @@ function Home() {
 		} else {
 			handleDeselectTopic(id);
 		}
+	}
+
+	function handleFolderClick(id) {
+		navigate(`folders/${id}`);
 	}
 
 	function topicIsSelected(id) {
@@ -54,56 +62,54 @@ function Home() {
 				explicabo excepturi odit quasi.
 			</p>
 
-			<section className="row mt-6">
-				<header className="col-12">
-					<h2 className="h4">Folders</h2>
-					<hr />
-				</header>
-				{folderlessFolders.map((folder) => (
-					<article className="col-12 mb-3">
-						<div className="card p-4">
-							<h1 className="h5">{folder.title}</h1>
-							<p className="text-muted mb-0">started on: {folder.started}</p>
-						</div>
-					</article>
-				))}
-			</section>
-
-			<section className="row mt-6">
-				<header className="col-12 mb-4">
-					<h2 className="h4">Projects</h2>
-					<hr />
-					<div className="d-flex">
-						{topics.map((topic) => (
-							<div className="form-check mr-3">
-								<input
-									className="form-check-input"
-									type="checkbox"
-									checked={topicIsSelected(topic.id)}
-									id={topic.title}
-									onChange={(e) => handleTopicCheck(e, topic.id)}
-								/>
-								<label className="form-check-label" for={topic.title}>
-									{topic.title}
-								</label>
-							</div>
-						))}
-					</div>
-				</header>
-				{folderlessProjects.map((project) => (
-					<article className="col-12 mb-3">
-						<div className="card p-4">
-							<h1 className="h5">{project.title}</h1>
-							<p className="text-muted mb-0">started on: {project.started}</p>
-							<div>
-								{project.topic_ids.map((topic_id) => (
-									<span className="badge bg-primary mr-2">{topicName(topic_id)}</span>
+			<div className="row">
+				<main className="col-8">
+					<section className="row mt-6">
+						<header className="col-12 mb-4">
+							<h2 className="h4">Projects</h2>
+							<hr />
+							<div className="d-flex flex-wrap">
+								{topics.map((topic) => (
+									<div className="form-check mr-3" key={uniqueId()}>
+										<input
+											className="form-check-input"
+											type="checkbox"
+											checked={topicIsSelected(topic.id)}
+											id={topic.title}
+											onChange={(e) => handleTopicCheck(e, topic.id)}
+										/>
+										<label className="form-check-label" for={topic.title}>
+											{topic.title}
+										</label>
+									</div>
 								))}
 							</div>
-						</div>
-					</article>
-				))}
-			</section>
+						</header>
+						{isEmpty(folderlessProjects) ? (
+							<p>No projects found.</p>
+						) : (
+							folderlessProjects.map((project) => (
+								<ProjectCard project={project} key={uniqueId()} topicName={topicName} />
+							))
+						)}
+					</section>
+				</main>
+				<aside className="col-4 pl-5">
+					<section className="row mt-6">
+						<header className="col-12">
+							<h2 className="h4">Folders</h2>
+							<hr />
+						</header>
+						{isEmpty(folderlessFolders) ? (
+							<p>No folders found.</p>
+						) : (
+							folderlessFolders.map((folder) => (
+								<FolderCard onClick={handleFolderClick} folder={folder} key={uniqueId()} />
+							))
+						)}
+					</section>
+				</aside>
+			</div>
 		</div>
 	);
 }
